@@ -1,4 +1,4 @@
-from settings import url_avito, driver, url_head_avito
+from app.settings import url_avito, driver, url_head_avito
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from bs4 import BeautifulSoup
@@ -127,8 +127,10 @@ def process(data):
     df = pd.DataFrame(data)
     out = df.to_json(orient='records', force_ascii=False)[1:-1].replace('},', '},\n').replace('\/', '/')
 
-    with open('DB.json', 'w') as f:
+    with open('DB/DB.json', 'w') as f:
         f.write(out)
+
+    df.to_csv('DB/all_data.csv', index=False)
 
 
 
@@ -156,24 +158,24 @@ def start_parsing():
 
 
 
-if __name__ == "__main__":
-    html = get_page(url_avito)
+# if __name__ == "__main__":
+#     html = get_page(url_avito)
 
-    all_data = []
-    data = get_data(html)
+#     all_data = []
+#     data = get_data(html)
 
-    for el in data:
-        all_data.append(el)
+#     for el in data:
+#         all_data.append(el)
 
-    process(data)
+#     process(data)
 
-    while True:
-        try:
-            all_data = next_page(all_data)
-        except:
-            print('It is last page\nParsing end')
-            driver.quit()
-            break
+#     while True:
+#         try:
+#             all_data = next_page(all_data)
+#         except:
+#             print('It is last page\nParsing end')
+#             driver.quit()
+#             break
 
 
 
