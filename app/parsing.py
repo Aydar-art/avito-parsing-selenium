@@ -14,10 +14,16 @@ def get_page(url):
     
     if 'Авито' in driver.title:
         html = BeautifulSoup(driver.page_source, 'lxml')
+        print('Успешное подключение')
 
     else:
-        time.sleep(30)
+        while not('Авито' in driver.title):
+            print('Повторная попытка подключения через 1 минуту...')
+            time.sleep(60)
+            driver.refresh()
+
         html = BeautifulSoup(driver.page_source, 'lxml')
+        print('Успешное подключение')
 
     return html
 
@@ -33,14 +39,17 @@ def next_page(all_data):
     next_page_button.click()
 
     if 'Авито' in driver.title:
+        print('Успешный переход на страницу')
         html = BeautifulSoup(driver.page_source, 'lxml')
 
     else:
         while not('Авито' in driver.title):
+            print('Повторная попытка через 1 мин...')
             time.sleep(60)
             driver.refresh()
 
         html = BeautifulSoup(driver.page_source, 'lxml')
+        print('Успешный переход на страницу')
 
     return html
     
@@ -141,7 +150,6 @@ def start_parsing():
 
     while True:
         try:
-            print('Next page...')
             time.sleep(random.randint(5, 7))
 
             html = next_page(all_data)
