@@ -1,0 +1,1 @@
+url = 'https://shikimori.one/collections/3981-500-samyh-populyarnyh-anime-na-shikimori?ysclid=md95lmy5st225802909'
