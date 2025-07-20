@@ -23,9 +23,6 @@ def get_page(url):
 
 #переход на следующую страницу
 def next_page(all_data):
-    print('Next page...')
-    time.sleep(random.randint(5, 7))
-
     body = driver.find_element(By.TAG_NAME, 'body')
 
     for _ in range(16):
@@ -39,17 +36,13 @@ def next_page(all_data):
         html = BeautifulSoup(driver.page_source, 'lxml')
 
     else:
-        time.sleep(30)
+        while not('Авито' in driver.title):
+            time.sleep(60)
+            driver.refresh()
+
         html = BeautifulSoup(driver.page_source, 'lxml')
 
-    data = get_data(html)
-
-    for el in data:
-        all_data.append(el)
-
-    process(all_data)
-
-    return all_data
+    return html
     
 
 #получение объявлений
@@ -148,7 +141,17 @@ def start_parsing():
 
     while True:
         try:
-            all_data = next_page(all_data)
+            print('Next page...')
+            time.sleep(random.randint(5, 7))
+
+            html = next_page(all_data)
+
+            data = get_data(html)
+
+            for el in data:
+                all_data.append(el)
+
+            process(all_data)
         except:
             print('It is last page\nParsing end')
             driver.quit()
